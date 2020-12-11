@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Error from './Error';
 
-const Form = () => {
+const Form = ({setSavedSearch}) => {
 
     const [term, setSavedTerm] = useState('');
     const [error, setSavedError] = useState(false);
@@ -18,6 +18,7 @@ const Form = () => {
         setSavedError(false);
 
         // enviar el termino de busqueda al componente principal
+        setSavedSearch(term);
     }
 
     return (
