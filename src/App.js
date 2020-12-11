@@ -18,7 +18,7 @@ function App() {
     const queryAPI = async () => {
       const imagesPerPage = 12;
       const key = '19487238-bd77e2c83db394142ecd7b5d1';
-      const url = `https://pixabay.com/api/?key=${key}&q=${search}&per_page=${imagesPerPage}`;
+      const url = `https://pixabay.com/api/?key=${key}&q=${search}&per_page=${imagesPerPage}&page=${currentPage}`;
 
       const response = await fetch(url);
       const data = await response.json();
@@ -28,19 +28,23 @@ function App() {
       // calcular el total de paginas
       const calculateTotalPages = Math.ceil(data.totalHits / imagesPerPage);
       setSavedTotalPages(calculateTotalPages);
+
+      // mover pantalla hacia arriba
+      const jumbotron = document.querySelector('.jumbotron');
+      jumbotron.scrollIntoView({behavior: 'smooth'});
     }
     queryAPI();
-  },[search]);
+  },[search, currentPage]);
 
   // pagina anterior
-  const handlePreviousPage = e => {
+  const handlePreviousPage = () => {
     const newCurrentPage = currentPage - 1;
 
     if(newCurrentPage === 0) return;
     setSavedCurrentPage(newCurrentPage);
   }
 
-  const handleNextPage = e => {
+  const handleNextPage = () => {
     const newCurrentPage = currentPage + 1;
 
     if(newCurrentPage > totalPages) return;
@@ -61,17 +65,21 @@ function App() {
           images={images}
         />
 
-        <button
-          type="button"
-          className="btn btn-info mr-1"
-          onClick={handlePreviousPage}
-        >&laquo; Anterior </button>
+        {(currentPage === 1) ? null : (
+          <button
+            type="button"
+            className="btn btn-info mr-1 mb-3"
+            onClick={handlePreviousPage}
+          >&laquo; Anterior </button>
+        )}
 
-        <button
-          type="button"
-          className="btn btn-info"
-          onClick={handleNextPage}
-        >Siguiente &raquo;</button>
+        {(currentPage === totalPages) ? null : (
+          <button
+            type="button"
+            className="btn btn-info mb-3"
+            onClick={handleNextPage}
+          >Siguiente &raquo;</button>
+        )}
       </div>
     </div>
   );
