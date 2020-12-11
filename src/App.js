@@ -32,6 +32,21 @@ function App() {
     queryAPI();
   },[search]);
 
+  // pagina anterior
+  const handlePreviousPage = e => {
+    const newCurrentPage = currentPage - 1;
+
+    if(newCurrentPage === 0) return;
+    setSavedCurrentPage(newCurrentPage);
+  }
+
+  const handleNextPage = e => {
+    const newCurrentPage = currentPage + 1;
+
+    if(newCurrentPage > totalPages) return;
+    setSavedCurrentPage(newCurrentPage);
+  }
+
   return (
     <div className="container">
       <div className="jumbotron">
@@ -45,6 +60,18 @@ function App() {
         <ImagesList
           images={images}
         />
+
+        <button
+          type="button"
+          className="btn btn-info mr-1"
+          onClick={handlePreviousPage}
+        >&laquo; Anterior </button>
+
+        <button
+          type="button"
+          className="btn btn-info"
+          onClick={handleNextPage}
+        >Siguiente &raquo;</button>
       </div>
     </div>
   );
