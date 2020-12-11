@@ -7,6 +7,9 @@ function App() {
   // state de la App
   const [search, setSavedSearch] = useState('');
   const [images, setSavedImages] = useState([]);
+  // state para paginador
+  const [currentPage, setSavedCurrentPage] = useState(1);
+  const [totalPages, setSavedTotalPages] = useState(1);
 
   useEffect(() => {
     // no ejecutar la primera vez
@@ -21,6 +24,10 @@ function App() {
       const data = await response.json();
 
       setSavedImages(data.hits);
+
+      // calcular el total de paginas
+      const calculateTotalPages = Math.ceil(data.totalHits / imagesPerPage);
+      setSavedTotalPages(calculateTotalPages);
     }
     queryAPI();
   },[search]);
